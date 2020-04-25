@@ -55,7 +55,7 @@ def get_all_expense(request):
 
 class ExpenseDetailView(LoginRequiredMixin, DetailView):
     """ detail view for expense"""
-    model = DetailView
+    model = Expense
     queryset = Expense.objects.all()
     template_name = "expense/expense_detail.html"
 

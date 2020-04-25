@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import DetailView
 from .forms import IncomeForm
 
 from income.models import Income
@@ -33,6 +34,13 @@ class IncomCreateView(LoginRequiredMixin, CreateView):
         self.object.save()
         return redirect(self.get_success_url())
 
+class IncomeDetailView(LoginRequiredMixin, DetailView):
+    """ detail view for expense"""
+    model = Income
+    queryset = Income.objects.all()
+    template_name = "income/income_detail.html"
+
+
 class IncomeUpdateView(LoginRequiredMixin, UpdateView):
     """ update view for income """
     queryset = Income.objects.get_queryset()
@@ -57,30 +65,10 @@ def get_alll_income(request):
 
     newIncome = []
     for i in incomes:
-        i["edit"]='<a href="/income/update/{}"  class="btn btn-primary income-delete">Update</a>'.format(i['id'])
+        i["edit"]='<a href="/income/detail/{}"  class="btn btn-primary income-delete">Edit</a>'.format(i['id'])
         newIncome.append(i)
 
     return JsonResponse(newIncome, safe=False)
-
-
-
-import datetime
-from django.db.models import Q
-
-def todayIncomeFilter(request):
-    today = datetime.date.today()
-    return Income.objects.filter(user = request.user).filter( Q(created_on__year = today.year) & Q(created_on__month = today.month) & Q(created_on__day = today.day))
-
-
-
-def weekIncomeFilter(request):
-    last_7_days = datetime.date.today() - datetime.timedelta(days=7)
-    return Income.objects.filter( user = request.user ).filter(created_on__gte= last_7_days)
-
-def income_month_filter(request):
-    today = datetime.date.today()
-    return Income.objects.filter(user =request.user).filter( Q(created_on__year = today.year) & Q(created_on__month = today.month) )
-
 
 
 
