@@ -1,0 +1,62 @@
+
+{% extends 'home/home.html' %}
+
+{% block dash %}
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-lg-12">
+			<h3>{{ object }}</h3>
+            <hr>
+            <p>{{ object.amount }}&#8377</p>
+            <p>{{ object.created_on }}</p>
+            <div class="row">
+                <a href="{% url 'update_expense' pk=object.id %}" class="btn btn-success">Update</a>
+                <button data-id="{{ object.id }}" class="ml-2 delete-btn btn btn-danger">Delete</button>
+            </div>
+		</div>
+	</div>
+
+
+
+	 <div class="row mt-5">
+
+            <div class="col-lg-12">
+
+
+
+            </div>
+        </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+
+    $(document).ready(function () {
+
+        $('.delete-btn').click(function () {
+
+            const itemId = parseInt($(this).attr('data-id'));
+            if (confirm("Are you sure to delete this ..")) {
+                $.ajax({
+                url: "/expense/delete/"+itemId,
+                success: (data)=>{
+                    window.location.href="/expense"
+                },
+                failure: (error) => alert("error to delete . Try Again Later")
+            })
+            }else   {
+                return false;
+            }
+
+        })
+
+
+    })
+
+
+    </script>
+{% endblock %}
