@@ -1,0 +1,63 @@
+{% extends 'home/home.html' %}
+
+{% block dash %}
+
+    <div class="container my-5">
+
+        <h2 class="title">Category</h2>
+
+	<div class="row">
+		<div class="col">
+			<a class="btn btn-primary" href="{% url 'category_create'  %}">create new expense</a>
+		</div>
+	</div>
+
+	 <div class="row mt-5">
+
+            <div class="col-lg-12">
+
+                <div class="table-responsive">
+                    <table class="table income-table table-striped table-inverse">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        $(document).ready(function () {
+
+
+
+            $('.table').DataTable({
+                ajax:{
+                    url:  "/category/all",
+                    dataSrc: ''
+                },
+                columns: [
+                    { data : 'name'},
+                    { data : 'created'},
+                    { data : "edit"},
+                ]
+            })
+
+
+        });
+
+
+    </script>
+{% endblock %}
+

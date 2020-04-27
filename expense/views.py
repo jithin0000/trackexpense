@@ -40,7 +40,7 @@ class ExpenseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "expense/expense_form.html"
     success_url = reverse_lazy('expense_home')
 
-@login_required(login_url='/login')
+@login_required(login_url='/')
 def get_all_expense(request):
     expenses = Expense.objects.all()
     expenses = list(expenses.values())
@@ -60,7 +60,7 @@ class ExpenseDetailView(LoginRequiredMixin, DetailView):
     template_name = "expense/expense_detail.html"
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/')
 def delete_expense(request,pk):
     expense = get_object_or_404(Expense, pk=pk)
     expense.delete()

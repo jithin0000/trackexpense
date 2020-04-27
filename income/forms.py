@@ -11,4 +11,4 @@ class IncomeForm(forms.ModelForm):
 
     class Meta:
         model = Income
-        fields =['name','amount', 'created_on']
+        fields =['name','category','amount', 'created_on']

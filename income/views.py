@@ -58,7 +58,6 @@ def delete_income(request,pk):
     return JsonResponse({"id" : id})
 
 
-@login_required(login_url='/login')
 def get_alll_income(request):
     incomes = Income.objects.all()
     incomes = list(incomes.values())

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles','customuser',
     'income',
     'expense',
-    'home'
+    'home','category'
 ]
 
 MIDDLEWARE = [
@@ -124,6 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL ='/media/'
+LOGIN_URL='/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')  ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'static')
