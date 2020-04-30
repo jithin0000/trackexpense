@@ -42,7 +42,7 @@ class ExpenseUpdateView(LoginRequiredMixin, UpdateView):
 
 @login_required(login_url='/')
 def get_all_expense(request):
-    expenses = Expense.objects.all()
+    expenses = Expense.objects.filter(user = request.user).all()
     expenses = list(expenses.values())
 
     newExpense = []

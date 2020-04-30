@@ -59,7 +59,7 @@ def delete_income(request,pk):
 
 
 def get_alll_income(request):
-    incomes = Income.objects.all()
+    incomes = Income.objects.filter(user = request.user).all()
     incomes = list(incomes.values())
 
     newIncome = []
