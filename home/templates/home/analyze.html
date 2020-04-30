@@ -26,18 +26,18 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Income</th>
-                        <th scope="col">Expense</th>
-                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Avg</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+                    {#                    <tr>#}
+                    {#                        <th scope="row">1</th>#}
+                    {#                        <td>Mark</td>#}
+                    {#                        <td>Otto</td>#}
+                    {#                        <td>@mdo</td>#}
+                    {#                    </tr>#}
 
                     </tbody>
                 </table>
@@ -68,6 +68,9 @@
 
 
         $(document).ready(function () {
+
+            let expense_income_table = $('.table');
+            expense_income_table.css('opacity', 0)
 
             $('#search-form').submit(function (ev) {
 
@@ -101,6 +104,11 @@
                     method: 'post',
                     data: data,
                     success: (res) => {
+
+
+                        expense_income_table.css('opacity', 1);
+                        expense_income_table.find('tbody').html("")
+
                         var expense_x = []
                         var expense_y = []
                         var expense_by_category_x = []
@@ -113,11 +121,12 @@
                             return "rgb(" + r + "," + g + "," + b + ")";
                         };
 
-                        console.log(res)
+
                         for (let i = 0; i < res.expense.length; i++) {
                             const item = res.expense[i];
                             expense_x.push(moment(item.created_on).format('MMM Do YY'))
                             expense_y.push(item.total)
+
 
                         }
 
@@ -135,6 +144,44 @@
                             income_x.push(moment(item.created_on).format('MMM Do YY'))
                             income_y.push(item.total)
                         }
+
+
+
+                        let expense_total = 0;
+                        let income_total = 0;
+                        for (let i = 0; i < expense_y.length; i++) {
+                            expense_total += expense_y[i]
+
+                        }
+                        console.log(expense_total)
+
+                        for (let i = 0; i < income_y.length; i++) {
+                            income_total += income_y[i]
+
+                        }
+                        console.log(income_total)
+
+                        let total = income_total -expense_total
+
+                        let avg_expense  = 0
+                        if (expense_y.length > 0 ) {
+                         avg_expense = expense_total/expense_y.length;
+
+                        }
+
+                        let avg_income  = 0
+                        if (income_y.length > 0 ) {
+                         avg_income = income_total/income_y.length;
+
+                        }
+
+                         var first_row =`<tr >  <td>1</td> <td>Income</td> <td>&#8377; ${income_total} </td> <td>&#8377; ${avg_expense.toFixed(2)}</td>  </tr>`
+                         var second_row =`<tr >  <td>2</td> <td>Expense</td> <td>&#8377; ${expense_total} </td> <td>&#8377; ${avg_income.toFixed(2)}</td>  </tr>`
+                         var third_row =`<tr >  <td></td> <td></td> <td>&#8377; <strong> ${total} <strong> </td>  <td></td> </tr>`
+                        expense_income_table.find('tbody').append(first_row)
+                        expense_income_table.find('tbody').append(second_row)
+                        expense_income_table.find('tbody').append(third_row)
+                        {#expense_income_table.find('tbody').append(fourth_row)#}
 
                         createLineChart(expense_x, expense_y, income_x, income_y)
                         createPieChart(expense_by_category_x, expense_by_category_y, colorExpense)
